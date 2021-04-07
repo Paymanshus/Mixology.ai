@@ -99,16 +99,19 @@ def home():
 # --------------------------------------
 # Reciever And Processor Output Function
 # --------------------------------------
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_image():
 
     if 'file' not in request.files:
+        print('No file part')
         flash('No file part')
         return redirect(request.url)
 
     file = request.files['file']
+    print(file)
 
     if file.filename == '':
+        print('No image selected for uploading')
         flash('No image selected for uploading')
         return redirect(request.url)
 
@@ -127,9 +130,11 @@ def upload_image():
 
         return render_template('index.html', user_img=filename, pred=pred, scroll='scrollable', ingredients_list=ing_list, recipe=recipe)
     else:
+        print('Allowed image types are -> png, jpg, jpeg, gif')
         flash('Allowed image types are -> png, jpg, jpeg, gif')
         return redirect(request.url)
 
+    return render_template("index.html")
     # return render_template("index.html", pred=pred, scroll="scrollable", )
 
 
