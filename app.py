@@ -78,6 +78,10 @@ def return_details(pred):
     ing_df = df[df['strDrinkLower'].str.contains(pred)]
     ing_list = ing_df.iloc[:, 9:24].dropna(axis=1).values.tolist()[0]
 
+    recipe = ing_df['strInstructions'].values[0]
+
+    return ing_list, recipe
+
 
 app = Flask(__name__, template_folder='templates')
 
