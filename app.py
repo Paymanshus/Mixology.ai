@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, flash, redirect
+from flask import Flask, request, render_template, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 import requests
 import pickle as pk
@@ -32,6 +32,8 @@ df = pd.read_csv('data/all_drinks.csv')
 df.apply(lambda x: x.astype(str).str.upper())
 df['strDrinkLower'] = df['strDrink'].apply(lambda x: x.lower())
 
+id = pd.read_csv('data/id_df.csv')
+
 IMG_WIDTH = 200
 IMG_HEIGHT = 200
 
@@ -61,13 +63,13 @@ def process_image(image):
 
 def predict_image(img_path):
     global model
+    global id
     image = process_image(img_path)
     image = np.array(tf.expand_dims(image, axis=0))
 
     pred = np.argmax(model.predict(image), axis=-1)[0]
 
-    id = pd.read_csv('data/id_df.csv')
-    pred_name = id[id['ID'] == pred]
+    pred_name = id[id['ID'] == pred]['Drink'].values[0]
 
     return pred_name
 
@@ -75,7 +77,7 @@ def predict_image(img_path):
 def return_details(pred):
     pred = pred.lower()
 
-    ing_df = df[df['strDrinkLower'].str.contains(pred)]
+    ing_df = df[df['strDrinkLower'] == pred]
     ing_list = ing_df.iloc[:, 9:24].dropna(axis=1).values.tolist()[0]
 
     recipe = ing_df['strInstructions'].values[0]
