@@ -89,6 +89,8 @@ app = Flask(__name__, template_folder='templates')
 
 app.config['UPLOADS'] = 'uploads'
 app.config['UPLOAD_FOLDER'] = 'uploads'
+app.secret_key = "secret_key"
+app.config['SECRET_KEY'] = 'secret_key'
 
 
 @app.route('/')
@@ -113,7 +115,8 @@ def upload_image():
     if file.filename == '':
         print('No image selected for uploading')
         flash('No image selected for uploading')
-        return redirect(request.url)
+        error = 'No image selected for uploading'
+        return render_template("index.html", error=error)
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -130,9 +133,9 @@ def upload_image():
 
         return render_template('index.html', user_img=filename, pred=pred, scroll='scrollable', ingredients_list=ing_list, recipe=recipe)
     else:
-        print('Allowed image types are -> png, jpg, jpeg, gif')
-        flash('Allowed image types are -> png, jpg, jpeg, gif')
-        return redirect(request.url)
+        error = ('Allowed image types are -> png, jpg, jpeg, gif')
+
+        return render_template("index.html", error=error)
 
     return render_template("index.html")
     # return render_template("index.html", pred=pred, scroll="scrollable", )

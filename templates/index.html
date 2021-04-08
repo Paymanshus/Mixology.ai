@@ -129,22 +129,24 @@
 
     <!-- Start About us -->
     <section id="mu-about-us">
-        <div class="container">
+        <div class="container" id="scrollable">
             <div class="row">
                 <div class="col-md-12">
                     <div class="mu-about-us-area">
                         <div class="mu-title">
-                            <span class="mu-subtitle">Making</span>
+                            <span class="mu-subtitle">Identifying</span>
                             <h2>The Drink</h2>
                             <i class="fa fa-spoon"></i>
                             <span class="mu-title-bar"></span>
                         </div>
                         <div class="row">
+                            {% if pred %}
+                            <center>
+                                <h3>The identified drink is a {{ pred }}</h3>
+                            </center>
                             <div class="col-md-6">
                                 <div class="mu-about-us-left">
-                                    <center>
-                                        <h3>The identified drink is {{ pred }}</h3>
-                                    </center>
+
                                     <h3>Ingredients</h3>
                                     <ul>
                                         {% for ingredient in ingredients_list %}
@@ -161,13 +163,24 @@
                                 <div class="mu-about-us-right">
                                     <ul class="mu-abtus-slider">
                                         <li>
-                                            <!-- <img src="../static/assets/img/about-us/abtus-img-1.png " alt="img ">  -->
                                             {{ user_img }}
-                                        </li>
+                                            <img src="{{ url_for('static', filename=user_img) }}" alt="{{ user_img }}" ) </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+
+                        {% elif error %}
+                        <center>
+                            <h3>{{ error }}</h3>
+                        </center>
+
+                        {% else %}
+                        <center>
+                            <h3>Upload an Image to begin identification</h3>
+                        </center>
+
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -176,7 +189,7 @@
     <!-- End About us -->
 
     <!-- Start Counter Section -->
-    <!-- <section id="mu-counter ">
+    <!-- <section id=" mu-counter ">
         <div class="mu-counter-overlay ">
             <div class="container ">
                 <div class="row ">
@@ -222,37 +235,37 @@
 
 
     <!-- Start Gallery -->
-    <!-- <section id="mu-gallery">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="mu-gallery-area">
-                        <div class="mu-title">
-                            <span class="mu-subtitle">Browse</span>
+    <!-- <section id="mu-gallery ">
+        <div class="container ">
+            <div class="row ">
+                <div class="col-md-12 ">
+                    <div class="mu-gallery-area ">
+                        <div class="mu-title ">
+                            <span class="mu-subtitle ">Browse</span>
                             <h2>The Gallery</h2>
-                            <i class="fa fa-spoon"></i>
-                            <span class="mu-title-bar"></span>
+                            <i class="fa fa-spoon "></i>
+                            <span class="mu-title-bar "></span>
                         </div>
-                        <div class="mu-gallery-content">
-                            
-                            <div class="mu-gallery-body" id="mixit-container">
-                                
+                        <div class="mu-gallery-content ">
+
+                            <div class="mu-gallery-body " id="mixit-container ">
+
                                 {% for gallery_img in gallery %}
-                                <div class="mu-single-gallery col-md-4 mix food">
-                                    <div class="mu-single-gallery-item">
-                                        <figure class="mu-single-gallery-img">
-                                            <a href="#">
+                                <div class="mu-single-gallery col-md-4 mix food ">
+                                    <div class="mu-single-gallery-item ">
+                                        <figure class="mu-single-gallery-img ">
+                                            <a href="# ">
                                                 {{ gallery_image }}
-                                                
+
                                         </figure>
-                                        <div class="mu-single-gallery-info">
-                                            <a href="../static/assets/img/gallery/big/1.jpg" data-fancybox-group="gallery" class="fancybox">
-                                                <img src="../static/assets/img/plus.png" alt="plus icon img">
+                                        <div class="mu-single-gallery-info ">
+                                            <a href="../static/assets/img/gallery/big/1.jpg " data-fancybox-group="gallery " class="fancybox ">
+                                                <img src="../static/assets/img/plus.png " alt="plus icon img ">
                                             </a>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 {% endfor %}
                             </div>
                         </div>
@@ -316,23 +329,35 @@
     <!-- End Footer -->
 
     <!-- jQuery library -->
-    <script src="../static/js/jquery.min.js "></script>
+    <script src="../static/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../static/js/bootstrap.js "></script>
+    <script src="../static/js/bootstrap.js"></script>
     <!-- Slick slider -->
-    <script type="text/javascript " src="../static/js/slick.js "></script>
+    <script type="text/javascript" src="../static/js/slick.js"></script>
     <!-- Counter -->
-    <script type="text/javascript " src="../static/js/waypoints.js "></script>
-    <script type="text/javascript " src="../static/js/jquery.counterup.js "></script>
+    <script type="text/javascript" src="../static/js/waypoints.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.counterup.js"></script>
     <!-- Date Picker -->
-    <script type="text/javascript " src="../static/js/bootstrap-datepicker.js "></script>
+    <script type="text/javascript" src="../static/js/bootstrap-datepicker.js"></script>
     <!-- Mixit slider -->
-    <script type="text/javascript " src="../static/js/jquery.mixitup.js "></script>
+    <script type="text/javascript" src="../static/js/jquery.mixitup.js"></script>
     <!-- Add fancyBox -->
-    <script type="text/javascript " src="../static/js/jquery.fancybox.pack.js "></script>
+    <script type="text/javascript" src="../static/js/jquery.fancybox.pack.js"></script>
 
     <!-- Custom js -->
-    <script src="../static/js/custom.js "></script>
+    <script src="../static/js/custom.js"></script>
+
+    {% if scroll %}
+    <script type="text/javascript">
+        // document.getElementById('{{ scroll }}').scrollIntoView();
+        //     OR
+        $(function() {
+            $("html, body").animate({
+                scrollTop: $("#{{ scroll }}").offset().top
+            }, 500);
+        });
+    </script>
+    {% endif %}
 
 </body>
 
