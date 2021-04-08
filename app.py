@@ -116,7 +116,7 @@ def upload_image():
         print('No image selected for uploading')
         flash('No image selected for uploading')
         error = 'No image selected for uploading'
-        return render_template("index.html", error=error)
+        return render_template("index.html", error=error, scroll='scrollable')
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -135,7 +135,7 @@ def upload_image():
     else:
         error = ('Allowed image types are -> png, jpg, jpeg, gif')
 
-        return render_template("index.html", error=error)
+        return render_template("index.html", error=error, scroll='scrollable')
 
     return render_template("index.html")
     # return render_template("index.html", pred=pred, scroll="scrollable", )
